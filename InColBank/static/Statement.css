@@ -1,0 +1,36 @@
+#main {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    position: relative;
+    top: 20px;
+
+    padding: 10px;
+    backdrop-filter: blur(10px);
+    border-radius: 0px 0px 20px 20px;
+    border: 1px solid white;
+}
+
+#h1 {
+    border: 1px solid white;
+    border-radius: 20px 20px 0px 0px;
+    position: relative;
+    float: left;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    top: 20px;
+    backdrop-filter: blur(10px)
+}
+
+#main table {
+
+    width: 85%;
+    font-size: 20px;
+    position: relative;
+    float: left;
+    border: 2px solid white;
+    text-align: center;
+}

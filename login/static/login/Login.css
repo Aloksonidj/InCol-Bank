@@ -1,0 +1,118 @@
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+.Container {
+    width: 420px;
+    border-radius: 15px;
+    padding: 30px 40px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+}
+
+.Container h1 {
+    font-size: 30px;
+    text-align: center;
+}
+
+.Container .input {
+    width: 100%;
+    height: 50px;
+    margin: 30px 0;
+    position: relative;
+   
+}
+
+.Container .input input{
+     width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 40px;
+    font-size: 15px;
+    padding: 20px 20px 20px 20px;
+}
+.input span {
+    position: absolute;
+    right: 20px;
+    top: 10%;
+    transform: translate(25%);
+    font-size: 30px;
+}
+
+.input input::placeholder {
+    color: white;
+}
+
+.Container .Forgot {
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    margin: -15px 0 15px;
+}
+
+.Forgot label .input {
+    accent-color: #ffff;
+    margin-right: 3px;
+}
+
+.Forgot a {
+    color: aliceblue;
+    text-decoration: none;
+}
+
+.Forgot a:hover {
+    text-decoration: underline;
+}
+
+.btn {
+    width: 100%;
+    height: 45px;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    background-color: aqua;
+}
+
+.btn:hover {
+    color: aliceblue;
+    border: 2px solid rgba(255, 255, 255, .3);
+    background: transparent;
+    text-decoration: underline;
+}
+
+.Container .register {
+    font-size: 15px;
+    text-align: center;
+    margin: 15px 0 15px;
+}
+
+.register a {
+    text-decoration: none;
+    color: aliceblue;
+}
+
+.register a:hover {
+    text-decoration: underline;
+}
+
+.special{
+    border: 0;
+    outline: 0;
+    width: 100%;
+    background: transparent;
+    color:black;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+}

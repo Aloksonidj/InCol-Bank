@@ -1,0 +1,16 @@
+{% extends 'Nav.html'%}
+   {% block start %}
+   {% load static %}
+
+   <link rel="stylesheet" href="{% static 'bank.css' %}">
+    <div class="main">
+        <div class="option">
+            Welcome to InCol BANK
+            <a href="{% url 'NewUser' %}"><button >TO OPEN New Account</button></a>
+
+            <a href="{% url 'LoginApp:login' %}"><button>To Login into Account</button></a>
+
+            <button>Apply for Loan</button>
+        </div>
+    </div>
+    {% endblock %}

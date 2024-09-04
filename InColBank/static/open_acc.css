@@ -1,0 +1,92 @@
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh;
+}
+
+.container {
+    width: 420px;
+    padding: 30px 40px;
+    position: relative;
+    border: 2px solid rgba(255, 255, 255, .3);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+.container h1 {
+    color: aliceblue;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.container input {
+    color: aliceblue;
+    width: 100%;
+    height: 45px;
+    background: transparent;
+    border: 1.5px solid rgba(255, 255, 255, .3);
+
+    margin: 7px 0;
+    border-radius: 20px;
+
+    font-size: 17px;
+
+    padding: 20px 20px;
+    outline: none;
+
+    background: transparent;
+
+    border-radius: 40px;
+}
+
+#id_Mobile_no{
+    margin-bottom: 20px;
+}
+
+.container label{
+    color: white;
+    font-size: 20px;
+    font-weight: 200;
+}
+
+.container .btn {
+    border: none;
+    outline: none;
+
+    width: 100%;
+    height: 50px;
+
+    border-radius: 40px;
+    font-weight: 600px;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    background: aqua;
+
+    cursor: pointer;
+    margin-bottom: 7px;
+
+}
+
+.btn:hover {
+    background: transparent;
+    border: 2px solid white;
+    color: aliceblue;
+    text-decoration: underline;
+}
+
+/* .special {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    padding-left: 20px;
+    text-align: center;
+    font-size: 19px;
+    font-weight: 600;
+    margin-top: 10px;
+    text-decoration: none;
+} */

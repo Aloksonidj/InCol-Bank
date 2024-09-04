@@ -1,0 +1,33 @@
+{% extends 'Nav.html'%}
+{% block start %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'open_acc.css' %}">
+<div class="main">
+    <div class="container">
+
+        <form action="{% url 'NewUser' %}" method="post">
+            {% csrf_token %}
+            <h1>Open new Account</h1>
+
+            {{form}}
+
+            <button type="submit" class="btn">Proceed</button>
+
+            <div id="Some" style="display: hidden;">{{Account}}</div>
+            <div id="special" style="display: hidden;">{{Acc_no}}</div>
+        </form>
+
+    </div>
+</div>
+<script>
+
+    if (document.querySelector("#special").innerHTML){
+        
+        let msg = document.querySelector("#special").innerHTML
+        const some = document.querySelector("#Some").innerHTML
+        alert(`${some} : ${msg}`)
+    }
+    
+</script>
+{% endblock %}

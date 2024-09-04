@@ -1,0 +1,33 @@
+{% extends 'Nav.html'%}
+   {% block start %}
+
+   {% load static %}
+   <link rel="stylesheet" href="{% static 'user.css' %}">
+    <div class="main">
+        <div class="container">
+            <form method="post" action="">
+            {% csrf_token %}
+                <h1>Online transfer</h1>
+
+                <h3>Your Current Balance :</h3>
+                <h2 style="color: black; margin-bottom: 10px;">{{Amount}}</h2>
+
+
+                <label>Reciever's Account no.</label>
+                <div class="input">
+                    <input type="number" name="Beneficiary" value="" placeholder="Account no" required>
+                </div>
+
+                <label>Amount to be transfer</label>
+                <div class="input">
+                    <input type="number" name="transfer" placeholder="Amount" required>
+                </div>
+
+                <button class="btn" type="submit" name="submit" value="True">Transfer</button>
+                <h3 class="h3">{{transfer}}</h3>
+
+            </form>
+        </div>
+    </div>
+    
+    {% endblock %}

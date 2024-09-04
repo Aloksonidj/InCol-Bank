@@ -1,0 +1,31 @@
+*{
+	margin: 0;
+	padding: 0;
+	color: white;
+}
+
+a{
+	text-decoration: none;
+	margin-right: 200px;
+	font-size: 15px;
+}
+input{
+	color: black;
+}
+button{
+	background-color: #ffad08;
+	border: 1px solid darkred;
+	color: black;
+}
+#image{
+	float: auto;
+	overflow: hidden;
+}
+#navbar{
+	height: 60px;
+	background-color: black;
+}
+#logo{
+	color: #ffad08;
+	font-size: 30px;
+}

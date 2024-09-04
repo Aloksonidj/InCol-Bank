@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank</title>
+    <link rel="stylesheet" href="{% static 'Nav.css' %}">
+</head>
+
+<body>
+    <header class="navbar">
+        InCol BANK.in
+
+        {% if name is not None %}
+        <div id="acc">
+            <div id="welcome">Welcome: {{name}}</div>
+            <a href= {{link}}>{{url}}</a>
+
+            {% if pin == "None" %}
+            <h3>Your InCol pin is set</h3>
+
+            {% elif pin is not None %}
+            <a id="a" href="{{pin}}">Set your InCol pin</a>
+
+            {% endif %}
+
+        </div>
+        {% endif %}
+    </header>
+       {% block start %}
+
+       {% endblock %}
+</body>
+
+</html>
