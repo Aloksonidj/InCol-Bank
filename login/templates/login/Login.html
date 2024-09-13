@@ -3,10 +3,22 @@
 {% load static %}
 
 <link rel="stylesheet" href="{% static 'login/Login.css' %}">
+
+<script>
+    document.addEventListener("DOMContentLoaded",() => {
+
+        const msg = document.querySelector(".special").innerHTML;
+        if(msg){
+            alert(`${msg}`)            
+        }
+    })
+
+</script>''
 <div class="main">
     <div class="Container">
         <form method="post" action="{% url 'LoginApp:login' %}">
             {% csrf_token %}
+
             <h1>Login</h1>
             <div class="input">
                 <input type="number" required placeholder="Account no" name="Account_no">
@@ -29,7 +41,7 @@
                 <a href="{% url 'NewUser' %}">New Account</a>
             </div>
 
-            <div class="special">{{pass}}</div>
+            <div class="special" style="display: none;">{{pass}}</div>
 
         </form>
     </div>
