@@ -21,7 +21,7 @@
     padding-bottom: 10px;
 }
 
-.container input {
+.container .input input {
     color: aliceblue;
     width: 100%;
     height: 45px;
@@ -36,12 +36,6 @@
     padding: 20px 20px;
     outline: none;
 
-    background: transparent;
-
-    border-radius: 40px;
-}
-
-#id_Mobile_no{
     margin-bottom: 20px;
 }
 

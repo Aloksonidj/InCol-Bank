@@ -1,35 +1,7 @@
 {% extends 'Nav.html'%}
    {% block start %}
-   <style>
-    * {
-        margin: 0;
-        padding: 0;
-    }
 
-    html,
-    body {
-        height: 100%;
-        width: 100%;
-    }
-
-    h2{
-        
-        margin-bottom: 10px;
-    }
-
-    #detail {
-
-        width: fit-content;
-        padding: 50px;
-        border: 1px solid black;
-        border-radius: 20px;
-        background-color: wheat;
-        text-shadow: 2px 0px 5px;
-        box-shadow: 3px 3px 15px rgb(40, 30, 30);
-
-    }
-</style>
-
+   <link rel="stylesheet" href="{% static 'login/account.css' %}">
     <div id="detail">
         <h1>Detail</h1>
         <br>
@@ -39,6 +11,9 @@
         <h2>Holder Name : {{Detail.user_name}}</h2>
         <h2>Mobile No. : {{Detail.Mobile_no}}</h2>
         <h2>Status : {{Detail.status}}</h2>
+    </div>
+    <div>
+        <a href="{% url 'LoginApp:transfer' %}">Transfer Money</a>
     </div>
 
    {% endblock %}

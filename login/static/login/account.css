@@ -1,0 +1,27 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+}
+
+h2{
+    
+    margin-bottom: 10px;
+}
+
+#detail {
+
+    width: fit-content;
+    padding: 50px;
+    border: 1px solid black;
+    border-radius: 20px;
+    background-color: wheat;
+    text-shadow: 2px 0px 5px;
+    box-shadow: 3px 3px 15px rgb(40, 30, 30);
+
+}

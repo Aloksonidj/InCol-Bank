@@ -17,29 +17,26 @@ def Home(request):
 
 
 def newAccount(request):
+    data = {"pass":None,"Account":'',"Acc_no":'',"name":None, "link":None, "url":None, "pin":None}
 
-    if request.method == "POST":
-        print(request.POST)
+    try : 
 
-        form = openAccount(request.POST)
+        if request.method == "POST":
 
-        if form.is_valid():
+                name = request.POST["User"]
+                password = request.POST["password"]
+                Mobile = request.POST["Mobile_no"]
 
-            name = form.cleaned_data["User"]
-            password = form.cleaned_data["password"]
-            Mobile = form.cleaned_data["Mobile_no"]
+                acc(user_name=name, passwords=password, Mobile_no=Mobile, balance=2000, status="Active", pin=None).save()
+                Id = acc.objects.get(user_name=name)
 
-            acc(user_name=name, passwords=password, Mobile_no=Mobile, balance=2000, status="Active", pin=None).save()
-            Id = acc.objects.get(user_name=name)
+                data = {"pass":None,"Account":"Your Account No is","Acc_no":Id.id,"name":Id.user_name}
+                return render(request, "open_Acc.html", data)
 
-            data = {"form":openAccount(),"pass":None,"Account":"Your Account No is","Acc_no":Id.id,"name":Id.user_name}
-            return render(request, "open_Acc.html", data)
-        
-        else:
+    except : 
+        data["Acc_no"] = "Something Wrong !!!"   
+        return render(request,"open_Acc.html",data)
 
-            Form = {"form":openAccount(),"Account":"Something Gone Wrong","Acc_no":"Please try Again"}
-            return render(request,"open_Acc.html",Form)
-    
-    Form = {"form":openAccount()}
-    return render(request,"open_Acc.html",Form)
+
+    return render(request,"open_Acc.html",data)
 

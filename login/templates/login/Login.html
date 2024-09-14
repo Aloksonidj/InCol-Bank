@@ -4,16 +4,7 @@
 
 <link rel="stylesheet" href="{% static 'login/Login.css' %}">
 
-<script>
-    document.addEventListener("DOMContentLoaded",() => {
-
-        const msg = document.querySelector(".special").innerHTML;
-        if(msg){
-            alert(`${msg}`)            
-        }
-    })
-
-</script>''
+<script src="login/Login.js"></script>
 <div class="main">
     <div class="Container">
         <form method="post" action="{% url 'LoginApp:login' %}">
@@ -21,12 +12,12 @@
 
             <h1>Login</h1>
             <div class="input">
-                <input type="number" required placeholder="Account no" name="Account_no">
+                <input type="number" required placeholder="Account no" name="Account_no" autofocus>
                 <span class="user-icon">&#128100; </span>
             </div>
 
             <div class="input">
-                <input type="password" required placeholder="password" name="password">
+                <input type="password" required placeholder="password" name="password" autofocus>
             </div>
 
             <div class="Forgot">

@@ -3,6 +3,8 @@
 {% load static %}
 
 <link rel="stylesheet" href="{% static 'open_acc.css' %}">
+<script src="{% static 'open_Acc.js' %}"></script>
+
 <div class="main">
     <div class="container">
 
@@ -10,7 +12,15 @@
             {% csrf_token %}
             <h1>Open new Account</h1>
 
-            {{form}}
+            <div class="input">
+                <input type="text" name="User" required autofocus placeholder="User Name">
+            </div>
+            <div class="input">
+                <input type="text" name="password" required autofocus placeholder="Password">
+            </div>
+            <div class="input">
+                <input type="text" name="Mobile_no" required autofocus placeholder="Mobile No">
+            </div>
 
             <button type="submit" class="btn">Proceed</button>
 
@@ -20,16 +30,5 @@
 
     </div>
 </div>
-<script>
 
-    if (document.querySelector("#special").innerHTML){
-        
-        let msg = document.querySelector("#special").innerHTML
-        const some = document.querySelector("#Some").innerHTML
-        alert(`${some} : ${msg}`)
-
-        window.location.href = "\login"
-    }
-    
-</script>
 {% endblock %}
