@@ -7,6 +7,6 @@ urlpatterns = [
 
     path("", views.Login, name="login"),
     path("<int:acc>",views.accountDetail, name='account'),
-    path("transfer",views.moneyTransfer, name='transfer'),
+    # path("transfer",views.moneyTransfer, name='transfer'),
 
 ]

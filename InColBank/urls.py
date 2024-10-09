@@ -23,7 +23,6 @@ urlpatterns = [
     path("",views.Home, name="Home"),
     path("login/", include('login.urls'), name='Login'),
     path('New_Account', views.newAccount, name="NewUser" ),
-    # path('Login/', views.login, name="login" ),
     # path("user/", views.user , name="user"),
     # path("statement/", views.State_detail ,name="Statement"),
     # path("Bankpin/", include("bank.urls") , name="CreatePin")
