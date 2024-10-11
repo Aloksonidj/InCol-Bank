@@ -1,7 +1,7 @@
 from django.http import HttpResponse ,HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import Account as Acc
+from .models import Account as Acc, statement as state
 from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
@@ -16,18 +16,19 @@ def Login(request):
     if request.method == "POST":
 
         #Get Information From Form
-        Account_no = request.POST["Account_no"]
+        Account_no = str(request.POST["Account_no"])
         Passwrd = request.POST["password"]
 
         try:
-
             user = authenticate(request, username=Account_no, password=Passwrd)
 
             if user is not None:
+
                 login(request, user)
+                id = int(Account_no)-1201100
 
                 #Getting Account Detail According To Account No Given IN Form
-                return HttpResponseRedirect(reverse('account', args=(Account_no,)))
+                return HttpResponseRedirect(reverse('LoginApp:account', args=(id,)))
              
             else: 
                 data['pass'] = "InValid Username And PassWord!!!"
@@ -40,19 +41,18 @@ def Login(request):
     return render(request,"login/Login.html", data)
 
 
-
+#To LogOut 
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("Home"))
 
 
+
 #To Display Account Detail After Login 
 def accountDetail(request,acc):
-    print("acc",acc)
-    print(type(acc))
 
     Account = Acc.objects.get(id = acc)
-    data = {"name":Account.user_name,"link":None,"url":"","pin":Account.pin,"Detail":Account}
+    data = {"name":Account.user_name,"link":reverse("LoginApp:logout"),"url":"Logout","pin":Account.pin,"Detail":Account}
 
     if Account :
         return render(request,"login/account.html", data)
@@ -60,86 +60,108 @@ def accountDetail(request,acc):
     return render(request,"login/account.html")
 
 
+#To Deposit Money In Self Account Or Transfer Money To Other's Account
+def moneyTransfer(request,id):
 
-# def moneyTransfer(request,id=1201107):
+    data = {"name":"Hello","link":reverse("LoginApp:logout"),"url":"Logout","pin":None}
+    Account_no = int(id)-1201100
+    print(id)
 
-#     data = {"name":None,"link":None,"url":"","pin":None}
-#     # id = request.session.get['Id']
+    try:
+            Account = Acc.objects.get(id = Account_no)
+            Balance = Account.balance
+            data['name'] = Account.user_name.first_name
+            data['Amount'] = Balance
 
-#     try:
-#             Account = Acc.objects.get(id = id)
-#             print("Account",Account.user_name)
-#             Balance = Account.balance
-#             print("Balance",Balance)
-#             data['name'] = Account.user_name
-#             data['Amount'] = Balance
+            if request.method == "POST" :
 
-#             if request.method == "POST" :
-#                 print("1!")
+                Beni_acc_no = int(request.POST["Beneficiary"])
+                Beni_acc_no = int(Beni_acc_no) -1201100
 
-#                 Beni_acc_no = int(request.POST["Beneficiary"])
-#                 print("Acc_no",Beni_acc_no)
+                try:
+                    Beni_account = Acc.objects.get(id = Beni_acc_no)
 
-#                 Beni_account = None
+                except:
+                    Beni_account = None
 
-#                 some = Acc.objects.all()
+                if Beni_account :
 
-#                 for account in some : 
+                    transfer = int(request.POST['transfer'])
 
-#                     if account.id == Beni_acc_no :
+                    if transfer > 0 :
 
-#                         Beni_account = Acc.objects.get(id = Beni_acc_no)
+                        if Account.user_name != Beni_account.user_name:
 
-#                 if Beni_account :
+                            if Balance >= transfer :
 
-#                     print("Beni_Account",Beni_account)
+                                Account.balance = Account.balance - transfer
 
-#                     transfer = int(request.POST['transfer'])
-#                     print("transfer",transfer)
+                                if Account.balance >= 0 :
 
-#                     if transfer > 0 :
-#                         print("some")
+                                    Result = statement(request,Account,Balance,-transfer,f"To{Beni_acc_no}")
 
-#                         if Balance >= transfer :
-#                             print("3!")
+                                    Account.save()
 
-#                             Account.balance = Account.balance - transfer
+                                    Balance = Account.balance
 
-#                             if Account.balance >= 0 :
+                                    Newbalance = Beni_account.balance + transfer
+                                    Result = statement(request,Beni_account,Newbalance,transfer,f"From{id}")
+                                    Beni_account.balance = Newbalance
+                                    Beni_account.save()
 
-#                                 Account.save()
-#                                 Balance = Account.balance
-#                                 print("Acc",Account.balance)
-#                                 Beni_account.balance = Beni_account.balance + transfer
-#                                 Beni_account.save()
-#                                 print("Beni",Beni_account.balance)
+                                    data["Amount"] = Balance
+                                    data['transfer'] = "Transition Successfull!!!!!"
 
-#                                 data["Amount"] = Balance
-#                                 data['transfer'] = "Transition Successfull!!!!!"
-
-#                                 return render(request,"login/user.html",data)
+                                    return render(request,"login/user.html",data)
+                                
+                                else : 
+                                    data["Amount"] = Balance
+                                    data['transfer'] = "Your Balance Is Zero 0"
+                                    return render(request,"login/user.html",data)
                             
-#                             else : 
-#                                 data["Amount"] = Balance
-#                                 data['transfer'] = "Your Balance Is Zero 0"
-#                                 return render(request,"login/user.html",data)
-                        
-#                         else : 
+                            else : 
 
-#                             data['transfer'] = "Inefficient Balance"
-#                             return render(request,"login/user.html",data)
-                
-#                     else: 
+                                data['transfer'] = "Inefficient Balance"
+                                return render(request,"login/user.html",data)
+                            
+                        elif Account.user_name == Beni_account.user_name:
 
-#                         data['transfer'] = "Enter 1 or more "
-#                         return render(request,"login/user.html",data)
+                            Result = statement(request,Account,Balance,transfer,"Deposit")
+
+                            Account.balance = Account.balance + transfer
+                            Account.save()
+                            Balance = Account.balance
+                            
+                            data["Amount"] = Balance
+                            data['transfer'] = "Deposited Successfull!!!!!"
+
+                            return render(request,"login/user.html",data)
+                                              
+                    else: 
+
+                        data['transfer'] = "Enter 1 or more "
+                        return render(request,"login/user.html",data)
                     
-#                 else : 
-#                     data['transfer'] = "Beneficiary Does Not Exist !!!!"
-#                     return render(request,"login/user.html",data)
+                else : 
+                    data['transfer'] = "Beneficiary Does Not Exist !!!!"
+                    return render(request,"login/user.html",data)
 
-#     except :
-#             data['tranfer'] = "Error"
-#             return render(request,"login/user.html",data)
+    except :
+            data['tranfer'] = "Error"
+            return render(request,"login/user.html",data)
     
-#     return render(request,"login/user.html",data)
+    return render(request,"login/user.html",data)
+
+
+
+#To Track Your Transition Through Login Account
+def statement(request,acc_no,Balance,cash,details):
+
+    try:
+
+        statement = state(acc_no = acc_no, before_balance = Balance, cash_flow = cash, detail = details )
+        statement.save()
+        return True
+    
+    except:
+        return False

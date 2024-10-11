@@ -6,7 +6,8 @@ app_name= "LoginApp"
 urlpatterns = [
 
     path("", views.Login, name="login"),
+    path('logout', views.logout_view, name="logout"),
     path("<int:acc>",views.accountDetail, name='account'),
-    # path("transfer",views.moneyTransfer, name='transfer'),
+    path("transfer/<int:id>",views.moneyTransfer, name='transfer'),
 
 ]

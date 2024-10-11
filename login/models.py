@@ -15,4 +15,14 @@ class Account(models.Model):
 
     def __str__(self):
         return f"{self.user_name}"
+    
+class statement(models.Model):
 
+    acc_no = models.ForeignKey(Account,on_delete=models.CASCADE, related_name="account_no")
+    before_balance = models.BigIntegerField()
+    cash_flow = models.BigIntegerField()
+    detail = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return f"{self.id}"
+    

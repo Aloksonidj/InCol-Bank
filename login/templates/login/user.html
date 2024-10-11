@@ -2,32 +2,41 @@
    {% block start %}
 
    {% load static %}
-   <link rel="stylesheet" href="{% static 'login/user.css' %}">
-    <div class="main">
-        <div class="container">
-            <form method="post" action="">
-            {% csrf_token %}
-                <h1>Online transfer</h1>
+  <link rel="stylesheet" href="{% static 'login/login.css' %}">
+   
+   {% if user.is_authenticated %} 
+   <div class="main">
+      <div class="Container">
+          <form method="post" action="{% url 'LoginApp:transfer' user %}">
+              {% csrf_token %}
+  
+              <h1>Transfer Money</h1>
+       
+              <h3 id="Balance">Your Current Balance :</h3>
+              <h2 style="color: black; margin-bottom: 10px;" id="Balance">{{Amount}}</h2>
+              
+              <div class="input">
+                  <input type="text" required placeholder="Beneficiary Account no" name="Beneficiary" autofocus>
+                  <span class="user-icon">&#128100; </span>
+              </div>
+  
+              <div class="input">
+                  <input type="number" required placeholder="Amount to be Transfer" name="transfer" autofocus>
+              </div>
+  
+              <button type="submit" class="btn">Transfer</button>
+  
+              <div class="register">
+                  Want to login from Another Account?
+                  <a href="{% url 'LoginApp:login' %}">Login</a>
+              </div>
+  
+              <div class="special" >{{transfer}}</div>
+  
+          </form>
+      </div>
+  </div>
 
-                <h3>Your Current Balance :</h3>
-                <h2 style="color: black; margin-bottom: 10px;">{{Amount}}</h2>
-
-
-                <label>Reciever's Account no.</label>
-                <div class="input">
-                    <input type="number" name="Beneficiary" value="" placeholder="Account no" required autofocus>
-                </div>
-
-                <label>Amount to be transfer</label>
-                <div class="input">
-                    <input type="number" name="transfer" placeholder="Amount" required autofocus>
-                </div>
-
-                <button class="btn" type="submit" name="submit" value="True">Transfer</button>
-                <h3 class="h3">{{transfer}}</h3>
-
-            </form>
-        </div>
-    </div>
+   {% endif %}
     
-    {% endblock %}
+   {% endblock %}

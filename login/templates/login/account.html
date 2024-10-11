@@ -1,23 +1,33 @@
 {% extends 'Nav.html'%}
 {% load static %}
-   {% block start %}
+{% block start %}
 
-   <link rel="stylesheet" href="{% static 'login/account.css' %}">
-    <div id="detail">
-        <h1>Detail</h1>
-        <br>
-        <hr>
-        <br>
-        <h2>Account No. : {{user}}</h2>
-        <h2>Holder Name : {{Detail.user_name.first_name}}</h2>
-        <h2>Mobile No. : {{Detail.Mobile_no}}</h2>
-        {% if Detail.status %}
-        <h2>Status : Active Account</h2>
-        {% else %}
-        <h2>Status : Account Closed</h2>
-        {% endif %}
+<link rel="stylesheet" href="{% static 'login/account.css' %}">
 
-    </div>
+<div class="main">
+    <div id="right">
+        <div id="detail">
+            <h1>Detail</h1>
+            <br>
+            <hr>
+            <br>
+            <h2>Account No. : {{user}}</h2>
+            <h2>Holder Name : {{Detail.user_name.first_name}}</h2>
+            <h2>Mobile No. : {{Detail.Mobile_no}}</h2>
+            {% if Detail.status %}
+            <h2>Status : Active Account</h2>
+            {% else %}
+            <h2>Status : Account Closed</h2>
+            {% endif %}
     
+            <a href="{% url 'LoginApp:transfer' user %}">Transfer Money</a>
+    
+        </div>
+    
+    </div>
+    <div id="left">
+       
+    </div>
+</div>
 
-   {% endblock %}
+{% endblock %}
