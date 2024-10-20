@@ -4,6 +4,7 @@
 
 <link rel="stylesheet" href="{% static 'login/account.css' %}">
 
+{% if user.is_authenticated %}
 <div class="main">
     <div id="right">
         <div id="detail">
@@ -19,13 +20,22 @@
             {% else %}
             <h2>Status : Account Closed</h2>
             {% endif %}
-    
-            <a href="{% url 'LoginApp:transfer' user %}">Transfer Money</a>
-    
+            <hr>
+            <div class="special">
+                To Transfer Money:
+                <a href="{% url 'LoginApp:transfer' user %}" id="transfer">Transfer</a>
+            </div>
+            <div class="special">
+                To View Your Statement:
+                <a href="{% url 'LoginApp:statement' user %}" id="transfer">Statement</a>
+            </div>
+   
         </div>
     
     </div>
+{% endif %}
     <div id="left">
+        <div style="display: none;" id="user">{{user}}</div>
        
     </div>
 </div>

@@ -1,7 +1,7 @@
-from django.http import HttpResponse ,HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import Account as Acc, statement as state
+from .models import Account as Acc, statement as state, User
 from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
@@ -10,6 +10,15 @@ from django.contrib.auth import authenticate, login, logout
 def Login(request):
 
     #To Give Addition Info     
+    
+    '''
+    To Login In Existing Account
+    
+    If request.method is POST it will cheak the form submition and try to authenticate the user
+    If user is authenticated then it will login the user and redirect to account_detail page
+    If user is not authenticated then it will return the same page with error message
+    '''
+    
     data = {"name":None,"link":None,"url":"","pin":None}
 
     #TO Check Form Submition 
@@ -31,7 +40,7 @@ def Login(request):
                 return HttpResponseRedirect(reverse('LoginApp:account', args=(id,)))
              
             else: 
-                data['pass'] = "InValid Username And PassWord!!!"
+                data['pass'] = "InValid Username Or PassWord!!!"
                 return render(request,"login/Login.html", data)
             
         except :
@@ -40,38 +49,51 @@ def Login(request):
 
     return render(request,"login/Login.html", data)
 
-
 #To LogOut 
 def logout_view(request):
+    """
+    Logout the user and redirect to homepage
+    """
     logout(request)
     return HttpResponseRedirect(reverse("Home"))
 
 
 
 #To Display Account Detail After Login 
-def accountDetail(request,acc):
+def account_detail(request, account_id):
+    """Return account detail page with name, logout link, and account info."""
 
-    Account = Acc.objects.get(id = acc)
-    data = {"name":Account.user_name,"link":reverse("LoginApp:logout"),"url":"Logout","pin":Account.pin,"Detail":Account}
+    account = Acc.objects.get(id=account_id)
+    data = {
+        "name": account.user_name,
+        "link": reverse("LoginApp:logout"),
+        "url": "Logout",
+        "pin": account.pin,
+    }
 
-    if Account :
-        return render(request,"login/account.html", data)
+    if account:
+        data["detail"] = account
+        return render(request, "login/account.html", data)
 
-    return render(request,"login/account.html")
+    return render(request, "login/account.html")
+
 
 
 #To Deposit Money In Self Account Or Transfer Money To Other's Account
-def moneyTransfer(request,id):
+def moneyTransfer(request,id,pin=False):
+    '''id: model.object(User) | pin (default = False)\n
+    return render(user.html) with name: user.first_name | link: logout | url: "Logout | pin: urlto(pin.html)"'''
 
-    data = {"name":"Hello","link":reverse("LoginApp:logout"),"url":"Logout","pin":None}
+    data = {"name":"","link":reverse("LoginApp:logout"),"url":"Logout","pin":''}
     Account_no = int(id)-1201100
-    print(id)
+    print("id",id)
 
     try:
             Account = Acc.objects.get(id = Account_no)
             Balance = Account.balance
             data['name'] = Account.user_name.first_name
             data['Amount'] = Balance
+            data["pin"] = Account.pin
 
             if request.method == "POST" :
 
@@ -80,32 +102,45 @@ def moneyTransfer(request,id):
 
                 try:
                     Beni_account = Acc.objects.get(id = Beni_acc_no)
+                    print("beni",Beni_account)
 
                 except:
                     Beni_account = None
 
                 if Beni_account :
+                    print("H", Account.user_name == Beni_account.user_name)
 
                     transfer = int(request.POST['transfer'])
 
                     if transfer > 0 :
 
                         if Account.user_name != Beni_account.user_name:
+                                
+                            if not pin:
+                                if Balance >= transfer :
 
-                            if Balance >= transfer :
+                                    Account.balance = Account.balance - transfer
 
-                                Account.balance = Account.balance - transfer
+                                    if Account.balance >= 0 :
 
-                                if Account.balance >= 0 :
+                                        return HttpResponseRedirect(reverse("LoginApp:pin", args=(id,)))
+                                
+                                else : 
 
-                                    Result = statement(request,Account,Balance,-transfer,f"To{Beni_acc_no}")
+                                    data['transfer'] = "Inefficient Balance"
+                                    return render(request,"login/user.html",data)
+                                
+                            elif pin:
+                                Result = statement(request,Account,Balance,-transfer,f"To{int(Beni_acc_no)+1201100}")
+
+                                if Result:
 
                                     Account.save()
 
                                     Balance = Account.balance
 
                                     Newbalance = Beni_account.balance + transfer
-                                    Result = statement(request,Beni_account,Newbalance,transfer,f"From{id}")
+                                    Result = statement(request,Beni_account,Newbalance,transfer,f"From{int(id)+1201100}")
                                     Beni_account.balance = Newbalance
                                     Beni_account.save()
 
@@ -113,16 +148,10 @@ def moneyTransfer(request,id):
                                     data['transfer'] = "Transition Successfull!!!!!"
 
                                     return render(request,"login/user.html",data)
-                                
-                                else : 
-                                    data["Amount"] = Balance
-                                    data['transfer'] = "Your Balance Is Zero 0"
-                                    return render(request,"login/user.html",data)
-                            
-                            else : 
+                                else:
+                                    data['transfer'] = "Transition Unsuccessfull???"
 
-                                data['transfer'] = "Inefficient Balance"
-                                return render(request,"login/user.html",data)
+                                    return render(request,"login/user.html",data)
                             
                         elif Account.user_name == Beni_account.user_name:
 
@@ -143,6 +172,7 @@ def moneyTransfer(request,id):
                         return render(request,"login/user.html",data)
                     
                 else : 
+                    print("hello")
                     data['transfer'] = "Beneficiary Does Not Exist !!!!"
                     return render(request,"login/user.html",data)
 
@@ -154,8 +184,9 @@ def moneyTransfer(request,id):
 
 
 
-#To Track Your Transition Through Login Account
+#To Track Your Transition Done By An Account Corresponding To The Current User 
 def statement(request,acc_no,Balance,cash,details):
+    '''request | acc_no: model.object(Account) | Balance: Integer | cash: Integer | details: string(from/to cash come/go)'''
 
     try:
 
@@ -165,3 +196,50 @@ def statement(request,acc_no,Balance,cash,details):
     
     except:
         return False
+
+
+
+#To Display The Statement Of An Account Corresponding To The Current User 
+def view_statement(request,account_no):
+    '''account_no: model.object(User) -> String'''
+    print("account_no",type(account_no))
+    
+    user = User.objects.get(username = account_no)
+    account_no = int(account_no) - 1201100
+    acc_no = Acc.objects.get(user_name = user)
+    data = {"name":acc_no.user_name,"link":reverse("LoginApp:logout"),"url":"Logout","pin":acc_no.pin}
+
+    Account = state.objects.filter(acc_no = acc_no)
+    data["statement"] = Account
+    return render(request,"login/Statement.html",data)
+
+
+
+#To Confirm The InCol Pin Before MoneyTransfer Or Before Transition
+def confirm_pin(request,id):
+        
+    Account_no = int(id)-1201100
+    t = request.GET.get('t')
+    print(t)
+    Account = Acc.objects.get(id = Account_no)
+    data = {"name":Account.user_name,"link":reverse("LoginApp:logout"),"url":"Logout","pin":Account.pin}
+    
+    if request.method == "POST":
+        
+        if t == True:
+            pin = request.POST['pin']
+            print("pin",Account.pin)
+
+            try:
+                if pin == Account.pin:
+                    moneyTransfer(id,pin=True)
+                else:
+                    data['pass'] = "Fail"
+                    return render(request, "login/pin.html", data)
+            except:
+                data['pass'] = "Error"
+                return render(request, "login/pin.html", data)
+            return render(request, "login/pin.html", data)
+        
+    return render(request, "login/pin.html", data)
+   

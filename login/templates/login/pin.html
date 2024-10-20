@@ -1,0 +1,23 @@
+{% extends 'Nav.html'%}
+{% block start %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'login/Login.css' %}">
+
+<div class="main">
+    <div class="Container">
+        {% if user.is_authenticated %}
+        <form method="post" action="{% url 'LoginApp:pin' user %}?t=True">
+            {% csrf_token %}
+            <h1>InCol Pin</h1>
+            <div class="input">
+                <input type="text" name="pin" placeholder="Enter Your InCol Pin">
+            </div>
+            <button type="submit" class="btn">Confirm</button>
+            {{pass}}
+
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -15,14 +15,14 @@
 
         {% if name is not None %}
         <div id="acc">
-            <div id="welcome">Welcome: {{user.first_name}}</div>
+            <div id="welcome">Welcome: {{name}}</div>
             <a href= {{link}}>{{url}}</a>
 
-            {% if pin == "None" %}
+            {% if pin %}
             <h3>Your InCol pin is set</h3>
 
-            {% elif pin is not None %}
-            <a id="a" href="{{pin}}">Set your InCol pin</a>
+            {% elif pin is None %}
+            <a id="a" href="{% url 'LoginApp:statement' user %}">Set your InCol pin</a>
 
             {% endif %}
 

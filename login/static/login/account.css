@@ -15,8 +15,10 @@ h2{
 
 #detail {
 
-    width: fit-content;
+    max-width: fit-content;
+    min-width: 450px;
     padding: 50px;
+    padding-bottom: 35px;
 
     border: 1px solid white;
     border-radius: 20px;
@@ -46,4 +48,15 @@ h2{
     height: 699px;
 
     backdrop-filter: blur(10px);
+}
+
+#transfer{
+        color: aliceblue;
+        text-decoration: none;
+        margin-bottom: 10px;
+}
+
+.special{
+    margin-top: 4px;
+    margin-bottom: 4px;
 }
