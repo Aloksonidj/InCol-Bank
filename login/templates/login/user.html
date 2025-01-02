@@ -7,7 +7,7 @@
    {% if user.is_authenticated %} 
    <div class="main">
       <div class="Container">
-          <form method="post" action="{% url 'LoginApp:transfer' user %}">
+          <form method="post" action="{% url 'LoginApp:transfer' %}">
               {% csrf_token %}
   
               <h1>Transfer Money</h1>
@@ -31,7 +31,7 @@
                   <a href="{% url 'LoginApp:login' %}">Login</a>
               </div>
   
-              <div class="special" >{{transfer}}</div>
+              <div class="special" >{{transfers}}</div>
   
           </form>
       </div>

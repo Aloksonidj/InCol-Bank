@@ -7,16 +7,33 @@
 <div class="main">
     <div class="Container">
         {% if user.is_authenticated %}
-        <form method="post" action="{% url 'LoginApp:pin' user %}?t=True">
-            {% csrf_token %}
-            <h1>InCol Pin</h1>
-            <div class="input">
-                <input type="text" name="pin" placeholder="Enter Your InCol Pin">
-            </div>
-            <button type="submit" class="btn">Confirm</button>
-            {{pass}}
+            {% if pin %}
+                <form method="post" action="{% url 'LoginApp:pin' %}">
+                    {% csrf_token %}
+                    <h1>InCol Pin</h1>
+                    <div class="input">
+                        <input type="text" name="pin" placeholder="Enter Your InCol Pin" required autofocus>
+                    </div>
+                    <button type="submit" class="btn">Confirm</button>
+                    {{pass}}
 
-        </form>
+                </form>
+            {% elif not pin %}
+                <form method="post" action="{% url 'LoginApp:pin' user %}">
+                    {% csrf_token %}
+                    <h1>InCol Pin</h1>
+                    <div class="input">
+                        <input type="text" name="setpin" placeholder="Enter a 6-digit Pin" required autofocus minlength="6">
+                    </div>
+                    <div class="input">
+                        <input type="text" name="confirmpin" placeholder="Re-enter 6-digit Pin" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn">Set Pin</button>
+                    {{pass}}
+
+                </form>
+            {% endif %}
+
         {% endif %}
     </div>
 </div>

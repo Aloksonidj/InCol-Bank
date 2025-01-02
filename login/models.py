@@ -5,6 +5,9 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     pass
 
+    def __str__(self):
+        return f"{self.username}"
+
 class Account(models.Model):
     '''user_name : model.object(User) | balance: Integer | status: Boolen(default = True) | Mobile_no: Integer | pin: Integer '''
     
@@ -18,11 +21,9 @@ class Account(models.Model):
         return f"{self.user_name}"
     
 class statement(models.Model):
-    '''acc_no: model.object(Account) |  before_balance: IntegerField | cash_flow: IntegerField | detail: CharField
-    Return Its's ID'''
 
     acc_no = models.ForeignKey(Account,on_delete=models.CASCADE, related_name="account_no")
-    before_balance = models.BigIntegerField()
+    After_balance = models.BigIntegerField()
     cash_flow = models.BigIntegerField()
     detail = models.CharField(max_length=1000)
 

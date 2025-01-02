@@ -13,16 +13,15 @@
     <header class="navbar">
         InCol BANK.in
 
-        {% if name is not None %}
+        {% if user.is_authenticated %}
         <div id="acc">
-            <div id="welcome">Welcome: {{name}}</div>
+            <div id="welcome">Welcome: {{user.first_name}}</div>
             <a href= {{link}}>{{url}}</a>
 
             {% if pin %}
-            <h3>Your InCol pin is set</h3>
-
+            <a id="a" href="{% url 'LoginApp:statement' %}?t=True">Your Statement</a>
             {% elif pin is None %}
-            <a id="a" href="{% url 'LoginApp:statement' user %}">Set your InCol pin</a>
+            <a id="a" href="{% url 'LoginApp:pin' %}">Set your InCol pin</a>
 
             {% endif %}
 

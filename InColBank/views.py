@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from login.models import Account , User
+from login.models import Account , User, statement
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.contrib.auth import login
@@ -14,6 +14,7 @@ def newAccount(request):
     data = {"pass":None,"Account":'',"Acc_no":'',"name":None, "link":None, "url":None, "pin":None}
 
     try : 
+        print("newAccount")
         if request.method == "POST":
 
                 name = request.POST["User"]
@@ -43,11 +44,15 @@ def newAccount(request):
                     print("first",user.first_name)
                     print('username',user.username)
                     print("!4")
+                    Balance = 2000
+                    transfer = 2000
+                    Result = statement(user,Balance,transfer,"Deposit")
+                    
                         
                     print("record",record.user_name)
                     login(request, user)
                     print("success")
-                    return HttpResponseRedirect(reverse('LoginApp:account', args=(record.id,)))
+                    return HttpResponseRedirect(reverse('LoginApp:account'))
             
     except : 
         data["Acc_no"] = "Something Wrong !!!"   
