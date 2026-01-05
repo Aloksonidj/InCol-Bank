@@ -2,69 +2,70 @@
 {% load static %}
 {% block start %}
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="{% static 'login/account.css' %}">
 
-{% if user.is_authenticated %}
-<div class="main">
-    <div id="right">
-        <div id="detail">
-            <h1>Detail</h1>
-            <br>
-            <hr>
-            <br>
-            <h2>Account No. : {{user}}</h2>
-            <h2>Holder Name : {{user.first_name}}</h2>
-            <h2>Mobile No. : {{detail.Mobile_no}}</h2>
-            {% if detail.status %}
-            <h2>Status : Active Account</h2>
-            {% else %}
-            <h2>Status : Account Closed</h2>
-            {% endif %}
-            <hr>
-            <div class="special">
-                To Transfer Money:
-                <a href="{% url 'LoginApp:transfer' %}" id="transfer">Transfer</a>
+<div class="container mt-5">
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="glass-card p-4 h-100">
+                <h1 class="display-6 border-bottom pb-2">Account Details</h1>
+                <div class="mt-4">
+                    <p class="h5"><strong>Account No:</strong> {{user}}</p>
+                    <p class="h5"><strong>Holder:</strong> {{user.first_name}}</p>
+                    <p class="h5"><strong>Mobile:</strong> {{detail.Mobile_no}}</p>
+                    <p class="h5"><strong>Status:</strong>
+                        <span class="badge {% if detail.status %}bg-success{% else %}bg-danger{% endif %}">
+                            {% if detail.status %}Active{% else %}Closed{% endif %}
+                        </span>
+                    </p>
+                </div>
+                <div class="mt-4 pt-3 border-top">
+                    <a href="{% url 'LoginApp:transfer' %}" class="btn btn-primary me-2">Transfer Money</a>
+                    <a href="{% url 'LoginApp:statement' %}?t=True" class="btn btn-outline-light">Full Statement</a>
+                </div>
             </div>
-            <div class="special">
-                To View Your Statement:
-                <a href="{% url 'LoginApp:statement' %}?t=True" id="transfer">Statement</a>
-            </div>
-   
         </div>
-    
-    </div>
-{% endif %}
-    <div id="left">
-        <div id="user" style="display: none;" >{{user}}</div>
-       
+
+        <div class="col-lg-4">
+            <div class="glass-card p-4 h-100">
+                <h3 class="h5 mb-3">Recent Activity</h3>
+                <div id="left" class="transaction-list">
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
-
 <script>
-    document.addEventListener("DOMContentLoaded", function (){
+    document.addEventListener("DOMContentLoaded", function () {
         fetch('statement/')
-        .then(response => response.json())
-        .then(statements => {
-            console.log("data",statements)
-            let count = 1
-            statements.forEach(Element => {
-                const Div = document.createElement('div')
-                Div.classList.add('statement')
-                Div.innerHTML = `<strong>
-                    ${count} ${Element.detail}<br>
-                    Cash Before Transaction: ${Element.balance}<br>
-                    Amount: ${Element.cash}
-                </strong>
-                `;
-                Div.style.border = '1px solid white'
-                Div.style.borderRadius = '10px'
-                Div.style.padding = '5px'
-                Div.style.marginBottom = '2px'
-                document.querySelector("#left").appendChild(Div)
-                count ++
-            });
-        })
+            .then(response => response.json())
+            .then(statements => {
+                console.log("data", statements)
+                let count = 1
+                statements.forEach(Element => {
+                    const colorClass = Element.cash < 0 ? 'text-danger' : 'text-success';
+                    const symbol = Element.cash > 0 ? '+' : '';
+                    const Div = document.createElement('div')
+                    Div.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-center rounded p-2 mb-1 statement">
+                            <div>
+                                <div class="small opacity-75">${Element.detail}</div>
+                                <div class="fw-bold">Bal: ₹${Element.balance}</div>
+                            </div>
+                            <div class="h5 mb-0 ${colorClass}">
+                                ${symbol}${Element.cash}
+                            </div>
+                        </div>
+                    `;
+
+                    document.querySelector("#left").appendChild(Div)
+                    count++
+                });
+            })
     })
+
 </script>
 
 {% endblock %}

@@ -15,7 +15,7 @@ class Account(models.Model):
     balance = models.BigIntegerField(default=2000)
     status = models.BooleanField(default=True)
     Mobile_no = models.BigIntegerField()
-    pin = models.IntegerField(max_length=6,null=True)
+    pin = models.IntegerField(null=True)
 
     def __str__(self):
         return f"{self.user_name}"
@@ -26,6 +26,7 @@ class statement(models.Model):
     After_balance = models.BigIntegerField()
     cash_flow = models.BigIntegerField()
     detail = models.CharField(max_length=1000)
+    date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.id}"

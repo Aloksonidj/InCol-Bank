@@ -8,22 +8,26 @@ html,
 body {
     height: 100%;
     width: 100%;
-    background: url(1698042777565.jpg) no-repeat;
+    background: url(1698042777565.jpg) no-repeat center center fixed;
     background-size: cover;
     background-position: center;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden; 
 }
-
+/* 
 .navbar {
-    height: 78px;
+
     padding: 4px 20px 0 20px;
-    font-size: 35px;
+    
     color: rgb(0, 0, 0);
-    text-shadow: 4px 3px 3px rgb(7, 66, 244);
+    
     box-shadow: 1px 1px 1px rgba(0, 0, 255, .6);
     background: linear-gradient(aqua, rgb(35, 128, 128));
     opacity: .6;
 
-}
+} */
 
 .navbar::selection{
     user-select: none;
@@ -58,7 +62,6 @@ body {
     text-decoration: underline;
 }
 .navbar #acc #a{
-        position: relative;
         top: 10px;
 }
 .navbar #acc h3 {
@@ -67,4 +70,28 @@ body {
   color: white;
   text-decoration: none;
   top: 20px;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px); /* Creates the frosted glass look */
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    color: white;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Specific styling for the transaction items inside JS */
+.statement {
+    background: rgba(0, 0, 0, 0.2);
+    border: none !important; /* Overriding your inline white border */
+    margin-bottom: 12px !important;
+    transition: transform 0.2s;
+
+}
+
+.statement:hover {
+    transform: scale(1.02); /* Subtle hover effect for modern feel */
+    border: 2px solid white !important;
 }

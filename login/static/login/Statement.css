@@ -33,3 +33,56 @@
     text-align: center;
     border-radius: 0px 0px 10px 10px;
 }
+
+/* Container for the table to add the glass effect */
+.glass-statement-container {
+    background: rgba(255, 255, 255, 0.1); /* Subtle white tint */
+    backdrop-filter: blur(15px); /* This creates the "frosted" glass look */
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px auto;
+    color: white;
+    max-height: 80vh;
+    overflow: hidden;
+    
+}
+
+.scroll{ 
+    max-height: 80vh;
+    overflow-y: auto; 
+}
+/* The Table Itself */
+.glass-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: white !important;
+    margin-bottom: 12vh;
+}
+
+/* Cell Lines: Semi-transparent white instead of solid black */
+.glass-table th, 
+.glass-table td {
+    border: 1px solid rgba(255, 255, 255, 0.2) !important; 
+    padding: 12px;
+    text-align: center;
+}
+
+/* Keep the table header fixed at the top of the glass container */
+.glass-table thead th {
+    position: sticky;
+    top: 0;
+    background: rgba(0, 0, 0, 0.8); /* Solid enough to hide rows behind it */
+    z-index: 2;
+}
+
+/* Header styling to make it feel "Premium" */
+.glass-table thead {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Hover effect so the user knows which line they are reading */
+.glass-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.1);
+}

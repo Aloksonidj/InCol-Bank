@@ -2,36 +2,40 @@
 {% block start %}
 {% load static %}
 
-<link rel="stylesheet" href="{% static 'open_acc.css' %}">
-<script src="{% static 'open_Acc.js' %}"></script>
 
-<div class="main">
-    <div class="container">
+<div class="container">
 
-        <form action="{% url 'NewUser' %}" method="post">
-            {% csrf_token %}
-            <h1>Open new Account</h1>
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="glass-card text-center mt-4">
+                <form action="{% url 'NewUser' %}" method="post" class="p-5 ">
+                    {% csrf_token %}
 
-            <div class="input">
-                <input type="text" name="User" required autofocus placeholder="User Name">
+                    <h1 class="mb-3">Open new Account</h1>
+                    <input type="text" class="form-control rounded-4 w-75 mx-auto mb-3" id="username" name="User"
+                        required autofocus placeholder="Enter your Name">
+                    <input type="text" class="form-control rounded-4 w-75 mx-auto mb-3" id="Mobile_no" name="Mobile_no"
+                        required autofocus placeholder="Enter your Mobile No">
+                    <input type="password" class="form-control rounded-4 w-75 mx-auto mb-3" id="password"
+                        name="password" required autofocus placeholder="Enter your Password">
+
+                    <input type="password" class="form-control rounded-4 w-75 mx-auto mb-3" id="confirm_password"
+                        name="confirm_password" required autofocus placeholder="Enter your Comfirm Password">
+
+                    <button type="submit" class="btn btn-lg w-75 mb-3 btn-primary rounded-5">Proceed</button>
+
+                    <div class="register">
+                        Already have Account?
+                        <a href="{% url 'LoginApp:login' %}">Log in</a>
+                    </div>
+                    <div id="Some" style="display: hidden;">{{Account}}</div>
+                    <div id="special" style="display: hidden;">{{Acc_no}}</div>
+                </form>
             </div>
-            <div class="input">
-                <input type="text" name="Mobile_no" required autofocus placeholder="Mobile No">
-            </div>
-            <div class="input">
-                <input type="password" name="password" required autofocus placeholder="Password">
-            </div>
-            <div class="input">
-                <input type="password" name="confirm_password" required autofocus placeholder="Comfirm Password">
-            </div>
-
-            <button type="submit" class="btn">Proceed</button>
-
-            <div id="Some" style="display: hidden;">{{Account}}</div>
-            <div id="special" style="display: hidden;">{{Acc_no}}</div>
-        </form>
-
+        </div>
     </div>
+
 </div>
 
+<script src="{% static 'open_Acc.js' %}"></script>
 {% endblock %}

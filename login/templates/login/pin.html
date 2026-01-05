@@ -4,37 +4,38 @@
 
 <link rel="stylesheet" href="{% static 'login/Login.css' %}">
 
-<div class="main">
-    <div class="Container">
-        {% if user.is_authenticated %}
-            {% if pin %}
-                <form method="post" action="{% url 'LoginApp:pin' %}">
+<div class="container">
+    <div class="row mt-5 justify-content-center">
+        <div class="col-6 p-5">
+            <div class="glass-card p-5 text-center">
+                {% if user.is_authenticated %}
+                {% if pin %}
+                <form method="post" action="{% url 'LoginApp:pin' %}" class="text-center ">
                     {% csrf_token %}
-                    <h1>InCol Pin</h1>
-                    <div class="input">
-                        <input type="text" name="pin" placeholder="Enter Your InCol Pin" required autofocus>
-                    </div>
-                    <button type="submit" class="btn">Confirm</button>
-                    {{pass}}
-
+                    <h1 class="mb-3">InCol Pin</h1>
+                    <input type="password" class="form-control w-75 mb-3 mx-auto rounded-4" name="pin" placeholder="Enter Your InCol Pin" minlength="4" maxlength="6" required autofocus>
+                    <button type="submit" class="btn btn-lg btn-info">Confirm</button>
+                    <div class="special">{{pass}}</div>
                 </form>
-            {% elif not pin %}
-                <form method="post" action="{% url 'LoginApp:pin' user %}">
+                <b>*Note: Your InCol Pin is a 6-digit number And used only to send money</b>
+                {% else %}
+                <form method="post" action="{% url 'LoginApp:pin' %}" class="p-4 pt-2 pb-2">
                     {% csrf_token %}
-                    <h1>InCol Pin</h1>
-                    <div class="input">
-                        <input type="text" name="setpin" placeholder="Enter a 6-digit Pin" required autofocus minlength="6">
-                    </div>
-                    <div class="input">
-                        <input type="text" name="confirmpin" placeholder="Re-enter 6-digit Pin" required minlength="6">
-                    </div>
-                    <button type="submit" class="btn">Set Pin</button>
+                    <h1 class="mb-3">InCol Pin</h1>
+                    <input type="text" class="form-control rounded-4 w-75 mx-auto mb-3" name="setpin" placeholder="Enter a 6-digit Pin" required autofocus minlength="4"
+                        maxlength="6">
+                    <input type="text" class="form-control rounded-4 w-75 mx-auto mb-3" name="confirmpin" placeholder="Re-enter 6-digit Pin" required minlength="6">
+                    <button type="submit" class="btn btn-lg btn-info">Set Pin</button>
                     {{pass}}
-
                 </form>
-            {% endif %}
+                <b>*Note: Remember your InCol Pin for future use</b>
 
-        {% endif %}
+                {% endif %}
+
+                {% endif %}
+
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

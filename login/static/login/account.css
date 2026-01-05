@@ -13,50 +13,25 @@ h2{
     margin-bottom: 10px;
 }
 
-#detail {
-
-    max-width: fit-content;
-    min-width: 450px;
-    padding: 50px;
-    padding-bottom: 35px;
-
-    border: 1px solid white;
+/* Styling for the glass-effect cards */
+.glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px); /* Creates the frosted glass look */
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 20px;
-
-    backdrop-filter: blur(10px);
-
-    color: black;
-    text-shadow: 2px 0px 5px rgb(61, 61, 60);
-    box-shadow: 3px 3px 15px rgb(125, 123, 123);
-
+    color: white;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
-.main{
-    display: flex;
-    align-items: center;
+/* Specific styling for the transaction items inside JS */
+.statement {
+    background: rgba(0, 0, 0, 0.2);
+    border: none !important; /* Overriding your inline white border */
+    margin-bottom: 12px !important;
+    transition: transform 0.2s;
 }
 
-.main #right{
-    display: flex;
-    width: 80%;
-    height: 100%;
-    justify-content: center;
-}
-
-.main #left{
-    width: 20%;
-    height: 699px;
-
-    backdrop-filter: blur(10px);
-}
-
-#transfer{
-        color: aliceblue;
-        text-decoration: none;
-        margin-bottom: 10px;
-}
-
-.special{
-    margin-top: 4px;
-    margin-bottom: 4px;
+.statement:hover {
+    transform: scale(1.02); /* Subtle hover effect for modern feel */
 }
