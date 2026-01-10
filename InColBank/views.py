@@ -3,6 +3,8 @@ from login.models import Account , User, statement
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.contrib.auth import login
+from django.contrib.auth.hashers import check_password
+from django.contrib import messages
 from django.db import IntegrityError
 
 
@@ -94,4 +96,73 @@ def newAccount(request):
 
 
     return render(request, "open_Acc.html", data)
+
+
+def check_user(request):
+    print("check_user")
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            pwrd = request.POST.get("pwrd")
+
+            try:
+                account = Account.objects.get(user_name=request.user)
+                if account and request.user.check_password(pwrd):
+                    request.session["account_details"] = {
+                        "user":request.user.username,
+                        "is_verfied":True
+                    }
+                    return HttpResponseRedirect(reverse("changepass"))
+                
+            except Exception as e:
+                print("Error:", e)
+                messages.debug(request, "Error in checking user.")
+        
+        else:
+            username = request.POST.get("acc_no")
+            mobile = request.POST.get('mobile')
+
+            try:
+                user = User.objects.get(username=username)
+                account = Account.objects.get(user_name=user, Mobile_no=mobile)
+                if account:
+                    request.session["account_details"] = {
+                        "user":username,
+                        "is_verfied":True
+                    }
+                    return HttpResponseRedirect(reverse("changepass"))
+                
+            except User.DoesNotExist:
+                print("User does not exist")
+                messages.error(request, "Invalid Account Number or Mobile Number.")
+
+    return render(request,"check_user.html")
+
+
+def change_password(request):
+    print("change_password")
+    if request.method == "POST":
+        new_pw = request.POST.get("new_password")
+        confirm_pw = request.POST.get("confirm_password")
+
+        try:
+            account = request.session.get("account_details")
+            
+            if account['is_verfied']:
+                user = User.objects.get(username=account['user'])
+
+                if new_pw == confirm_pw:
+                    user.set_password(new_pw) 
+                    user.save()
+                    messages.success(request, "Password updated successfully! Please login.")
+                    del request.session['account_details']
+                    if request.user.is_authenticated:
+                        return redirect(reverse("LoginApp:account"))
+                    return redirect(reverse("LoginApp:login"))
+                else:
+                    messages.error(request, "Passwords do not match.")  
+        
+        except (User.DoesNotExist, Account.DoesNotExist):
+            messages.error(request, "Invalid Account Number or Mobile Number.")
+
+    return render(request, "forget_password.html")
 

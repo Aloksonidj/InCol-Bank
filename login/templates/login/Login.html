@@ -1,26 +1,25 @@
 {% extends 'Nav.html'%}
-{% block start %}
 {% load static %}
-
-<link rel="stylesheet" href="{% static 'login/Login.css' %}">
-
+{% block css %}<link rel="stylesheet" href="{% static 'login/Login.css' %}">{% endblock %}
+{% block start %}
 <div class="container">
     <div class="row justify-content-center pt-5">
         <div class="col-lg-5 mt-5">
             <div class="glass-card p-4">
-                <a href="" class="btn btn-outline-primary">Back</a>
+                <a href="{% url 'Home' %}" class="btn btn-outline-primary"><i class="fa-solid fa-arrow-left-long"></i>Back</a>
                 <form method="post" action="{% url 'LoginApp:login' %}" class="text-center p-4 pt-0">
                     {% csrf_token %}
- 
+
                     <h1 class="mb-3">Login</h1>
-                        <input type="text" class="form-control w-75 mx-auto rounded-4 mb-3" required placeholder="Account no" name="Account_no" autofocus>
+                    <input type="text" class="form-control w-75 mx-auto rounded-4 mb-3" required
+                        placeholder="Account no" name="Account_no" autofocus>
 
-                        <input type="password" class="form-control w-75 mx-auto rounded-4 mb-3" required placeholder="password" name="password" autofocus>
+                    <input type="password" class="form-control w-75 mx-auto rounded-4 mb-2" required
+                        placeholder="password" name="password" autofocus>
 
-                    <!-- <div class="Forgot">
-                        <label><input type="checkbox">Remember Me</label>
-                        <a href="" class="link">Forgot Account no</a>
-                    </div> -->
+                    <div class="row mb-2 justify-content-end">
+                        <a href="{% url 'ForgetPassword' %}" class="">Forgot Password?</a>
+                    </div>
 
                     <button type="submit" class="btn btn-lg w-75 mb-3 btn-info rounded-5">Login</button>
 
@@ -28,13 +27,9 @@
                         Don't have Account?
                         <a href="{% url 'NewUser' %}">New Account</a>
                     </div>
-
-                    <div class="special">{{pass}}</div>
-
                 </form>
             </div>
         </div>
     </div>
-</div>
 </div>
 {% endblock %}

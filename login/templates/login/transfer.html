@@ -1,17 +1,22 @@
 {% extends 'Nav.html'%}
-{% block start %}
-
 {% load static %}
-<link rel="stylesheet" href="{% static 'login/login.css' %}">
-
+{% block css %}
+<link rel="stylesheet" href="{% static 'login/login.css' %}">{% endblock %}
+{% block start %}
 {% if user.is_authenticated %}
 <div class="container mt-5 p-3">
     <div class="row justify-content-center ">
         <div class="col-lg-5">
-            <div class="glass-card p-5">
-                <form method="post" action="{% url 'LoginApp:transfer' %}" class="text-center">
-                    {% csrf_token %}
+            <div class="glass-card">
+                <div class="row justify-content-start ps-4 pt-4">
+                    <div class="col rounded">
+                        <a href="{% url 'LoginApp:account' %}" class="btn btn-outline-primary"><i
+                                class="fa-solid fa-arrow-left-long"></i>Back</a>
+                    </div>
+                </div>
 
+                <form method="post" action="{% url 'LoginApp:transfer' %}" class="p-5 pt-1 text-center">
+                    {% csrf_token %}
                     <h1>Transfer Money</h1>
 
                     <h3 class="h6">Your Current Balance :</h3>
@@ -24,11 +29,6 @@
                         placeholder="Amount to be Transfer" name="transfer" autofocus>
 
                     <button type="submit" class="btn btn-lg btn-primary">Transfer</button>
-
-                    <div class="mt-2">
-                        Want to login from Another Account?
-                        <a href="{% url 'LoginApp:login' %}">Login</a>
-                    </div>
 
                     <div class="special"> <a href="">{{transfers}}</a></div>
 

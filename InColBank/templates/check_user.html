@@ -1,0 +1,41 @@
+{% extends 'Nav.html' %}
+{% block start %}
+<div class="container mt-5">
+    <div class="row justify-content-center pt-4">
+        <div class="glass-card col-5 pb-5 mt-5">
+            {% if user.is_authenticated %}
+            <div class="row justify-content-start ps-2 pt-4">
+                <div class="col-3">
+                    <a href="{% url 'LoginApp:account' %}" class="btn btn-outline-primary"><i
+                            class="fa-solid fa-arrow-left-long"></i>Back</a>
+                </div>
+            </div>
+            <form method="post" class="p-5 text-center">
+                {% csrf_token %}
+                <h1 class="mb-3">Current Password</h1>
+                <input type="password" class="form-control w-75 mb-3 mx-auto rounded-4" name="pwrd"
+                    placeholder="Enter your current password" required autofocus>
+                <button type="submit" class="btn btn-lg btn-info">Confirm</button>
+            </form>
+            {% else %}
+
+            <div class="row justify-content-start ps-2 pt-4">
+                <div class="col-3">
+                    <a onclick="history.back()" class="btn btn-outline-primary"><i
+                                class="fa-solid fa-arrow-left-long"></i>Back</a>
+                </div>
+            </div>
+            <form method="POST" class="text-center">
+                {% csrf_token %}
+                <h2 class="text-center mb-4">Get Account Details</h2>
+                <input type="text" name="acc_no" class="form-control w-75 mx-auto mb-3 rounded-4"
+                    placeholder="Account Number" required>
+                <input type="text" name="mobile" class="form-control w-75 mx-auto mb-3 rounded-4"
+                    placeholder="Registered Mobile Number" minlength="10" required>
+                <button type="submit" class="btn btn-lg btn-info w-75 mx-auto rounded-5">Get Details</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

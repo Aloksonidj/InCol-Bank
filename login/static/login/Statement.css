@@ -73,7 +73,8 @@
 .glass-table thead th {
     position: sticky;
     top: 0;
-    background: rgba(0, 0, 0, 0.8); /* Solid enough to hide rows behind it */
+    color: black !important;
+    background: rgba(225, 225, 225, 0.9); /* Solid enough to hide rows behind it */
     z-index: 2;
 }
 

@@ -1,9 +1,7 @@
 {% extends 'Nav.html'%}
+{% load static %} 
+{% block css %}<link rel="stylesheet" href="{% static 'bank.css' %}">{% endblock %}
 {% block start %}
-{% load static %}
-
-<link rel="stylesheet" href="{% static 'bank.css' %}">
-
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-lg-6 mt-5">

@@ -1,9 +1,7 @@
 {% extends 'Nav.html'%}
-{% block start %}
 {% load static %}
-
-<link rel="stylesheet" href="{% static 'login/Statement.css' %}">
-
+{% block css %}<link rel="stylesheet" href="{% static 'login/Statement.css' %}">{% endblock %}
+{% block start %}
 <div class="container mt-5">
     <div class="glass-statement-container table-responsive">
         <h2 class="text-center mb-4">Bank Statement</h2>

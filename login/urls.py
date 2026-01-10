@@ -10,6 +10,8 @@ urlpatterns = [
     path("account/",views.account_detail, name="account"),
     path("transfer/",views.moneyTransfer, name="transfer"),
     path("account/statement/", views.view_statement, name="statement"),
-    path("transfer/pin",views.confirm_pin, name="pin"),
+    path("transfer/pin",views.confirm_pay, name="pin"),
+    path("account/check-balance/", views.checkBalance, name="check_balance"),
+    path("account/hide-balance/", views.hide_balance, name="hide_balance"),
 
 ]

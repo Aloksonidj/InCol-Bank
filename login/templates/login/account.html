@@ -1,14 +1,14 @@
 {% extends 'Nav.html'%}
 {% load static %}
+{% block css %}<link rel="stylesheet" href="{% static 'login/account.css' %}">{% endblock%}
 {% block start %}
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="{% static 'login/account.css' %}">
 
 <div class="container mt-5">
     <div class="row g-4">
+<!-- -----------------------------Left main div---------------------------------- -->
         <div class="col-lg-8">
             <div class="glass-card p-4 h-100">
+<!-- -----------------------------Account Details-------------------------------- -->
                 <h1 class="display-6 border-bottom pb-2">Account Details</h1>
                 <div class="mt-4">
                     <p class="h5"><strong>Account No:</strong> {{user}}</p>
@@ -20,13 +20,60 @@
                         </span>
                     </p>
                 </div>
-                <div class="mt-4 pt-3 border-top">
-                    <a href="{% url 'LoginApp:transfer' %}" class="btn btn-primary me-2">Transfer Money</a>
-                    <a href="{% url 'LoginApp:statement' %}?t=True" class="btn btn-outline-light">Full Statement</a>
+
+<!-- -----------------------------Row for buttons-------------------------------- -->
+                <div class="row mt-4 p-3 ps-1 border-top">
+
+<!-- --------------------------------------Transfer money---------------------- -->
+                    <a href="{% url 'LoginApp:transfer' %}" class="card-link col-lg-4 mb-2 text-decoration-none">
+                        <div class="glass-btn-card text-center p-3">
+                            <i class="fa-solid fa-building-columns"></i><br>
+                            <span class="fw-bold">Transfer</span>
+                        </div>
+                    </a>
+
+<!-- --------------------------------------Your Statement-------------------------- -->
+                    <a href="{% url 'LoginApp:statement' %}?t=True"
+                        class="card-link col-lg-4 mb-2 text-decoration-none">
+                        <div class="glass-btn-card text-center p-3">
+                            <i class="fa-solid fa-file-invoice"></i><br>
+                            <span class="fw-bold">Full Statement</span>
+                        </div>
+                    </a>
+
+<!-- --------------------------------------Check Balance-------------------------- -->
+                    {% if request.session.show_balance %}
+                    <div class="card-link col-lg-4 mb-2">
+                        <div class="glass-btn-card p-3 text-center row justify-content-between">
+                            <div class="col-8">
+                                Total Balance: <br><span class="fw-bold">₹{{ detail.balance }}</span></div>
+                            <div class="border-start col-2 text-center" id="close">
+                                <i class="fa-solid fa-circle-chevron-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <a href="{% url 'LoginApp:check_balance' %}" id="check"
+                        class="card-link col-lg-4 mb-2 text-decoration-none">
+                        <div class="glass-btn-card text-center p-3">
+                            <i class="fa-solid fa-money-bill-wave"></i>
+                            <br>
+                            <span class="fw-bold">Check balance</span>
+                        </div>
+                    </a>
+                    {% endif %}
+
+                    <a href="{% url 'ForgetPassword' %}" class="card-link col-lg-4 text-decoration-none">
+                        <div class="glass-btn-card text-center p-3">
+                            <i class="fa-solid fa-user-lock"></i><br>
+                            <span class="fw-bold">Change Password</span>
+                        </div>
+                    </a>
+
                 </div>
             </div>
         </div>
-
+<!-- -----------------------------Recent Activity-------------------------------- -->
         <div class="col-lg-4">
             <div class="glass-card p-4 h-100">
                 <h3 class="h5 mb-3">Recent Activity</h3>
@@ -37,6 +84,8 @@
 
     </div>
 </div>
+{% endblock %}
+{% block js %}
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         fetch('statement/')
@@ -64,8 +113,12 @@
                     count++
                 });
             })
+
+        document.querySelector("#close").addEventListener("click", () => {
+            fetch("{% url 'LoginApp:hide_balance' %}")
+            window.location.reload();
+        })
     })
 
 </script>
-
 {% endblock %}
