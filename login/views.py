@@ -8,7 +8,7 @@ from django.contrib import messages
 # Create your views here.
 
 # helper functions
-def confirm_pin(request,pin,t=False):
+def confirm_pin(request,pin):
     print("confirm_pin")
     '''
     Confirm if the pin matches the user's InCol pin
@@ -27,7 +27,7 @@ def confirm_pin(request,pin,t=False):
         if Account.pin == pin:
             return True
     except Exception as e:
-        print(e)
+        print("Error:", e)
         return False
     return False
 
@@ -168,8 +168,7 @@ def moneyTransfer(request):
             # Check if the account has set the InCol pin
             if not Account.pin:
                 messages.warning(request,"Set your InCol pin first!!!")
-                data['t'] = reverse("LoginApp:pin")
-                return render(request,"login/transfer.html",data)
+                return redirect("LoginApp:pin")
 
             # Get the beneficiary account information
             Beni_acc_no = int(request.POST["Beneficiary"])
@@ -269,52 +268,53 @@ def confirm_pay(request):
 
             try:
                 is_valid = confirm_pin(request,pin)
-
+                
                 if is_valid :
-                        # If the pin is correct
+                    # If the pin is correct
 
-                        action = request.session.get('action_type')
-            
-                        if action == 'check_balance':
-                            request.session['show_balance'] = True 
-                            del request.session['action_type']
-                            return HttpResponseRedirect(reverse("LoginApp:account"))
+                    action = request.session.get('action_type')
+                    
+                    if action == 'check_balance':
+                        request.session['show_balance'] = True 
+                        del request.session['action_type']
+                        return HttpResponseRedirect(reverse("LoginApp:account"))
+                    
+
+                    # Get the beneficiary account number and the amount
+                    # to transfer from the session
+                    Beni_acc_no = request.session.get("Beni_acc_no")
+                    transfer = int(request.session.get("transfer"))
+                    
+                    Beni_account = Acc.objects.get(id = Beni_acc_no)
+                    
+                    Balance = Account.balance - transfer
+
+                    try:
+                        # Create a new statement for the current user
+                        Result1 = statement(Account,Balance,-transfer,f"to {int(Beni_acc_no)+1201100}")
+
+                        # Update the balance of the current user
+                        Account.balance = Balance                      
+
+                        # Create a new statement for the beneficiary
+                        Newbalance = Beni_account.balance + transfer
+                        Result2 = statement(Beni_account,Newbalance,transfer,f"From {Account.user_name}")
                         
+                        # Update the balance of the beneficiary
+                        Beni_account.balance = Newbalance
+                        if Result1 and Result2:
+                            Account.save()
+                            Beni_account.save()
+                            # Update the data
+                            messages.success(request, "Transition Successfull!!!!!")
 
-                        # Get the beneficiary account number and the amount
-                        # to transfer from the session
-                        Beni_acc_no = request.session.get("Beni_acc_no")
-                        transfer = int(request.session.get("transfer"))
-                            
-                        Beni_account = Acc.objects.get(id = Beni_acc_no)
-                            
-                        Balance = Account.balance - transfer
+                            return HttpResponseRedirect(reverse("LoginApp:transfer"))
+                    except Exception as e:
+                        # If there is any error
+                        print(e)
+                        messages.error(request, "Transition Unsuccessfull???")
 
-                        try:
-                                    # Create a new statement for the current user
-                                    Result = statement(Account,Balance,-transfer,f"To {int(Beni_acc_no)+1201100}")
-
-                                    # Update the balance of the current user
-                                    Account.balance = Balance                         
-                                    Account.save()
-
-                                    # Create a new statement for the beneficiary
-                                    Newbalance = Beni_account.balance + transfer
-                                    Result = statement(Beni_account,Newbalance,transfer,f"From {Account.user_name}")
-                                    # Update the balance of the beneficiary
-                                    Beni_account.balance = Newbalance
-                                    Beni_account.save()
-                                    # Update the data
-                                    data["Amount"] = Balance
-                                    messages.success(request, "Transition Successfull!!!!!")
-
-                                    return HttpResponseRedirect(reverse("LoginApp:transfer"))
-                        except Exception as e:
-                                # If there is any error
-                                print(e)
-                                messages.error(request, "Transition Unsuccessfull???")
-
-                                return render(request,"login/transfer.html",data)
+                        return render(request,"login/transfer.html",data)
                         
                         
                 else:
@@ -343,7 +343,7 @@ def confirm_pay(request):
                     Account.save()
                     # Update the data
                     messages.success(request, "Pin Set Successfull!!!")
-                    return render(request, "login/pin.html", data)
+                    return redirect("LoginApp:account")
                 
                 else:
                     # If the pin is incorrect
@@ -360,7 +360,6 @@ def confirm_pay(request):
  
 
 #To Track Your Transition Done By An Account Corresponding To The Current User 
-@decorators.login_required
 def statement(acc_nos, Balance, cash, details):
     """
     This function creates a new statement in the database 
@@ -375,14 +374,14 @@ def statement(acc_nos, Balance, cash, details):
     Returns:
     bool: True if the statement is created successfully else False
     """
-    print("statement")
+    print("statement function started")
     try:
         statement = state(acc_no=acc_nos, After_balance=Balance, cash_flow=cash, detail=details)
         statement.save()
         return True
     
     except Exception as e:
-        print(e)
+        print(f"statement function: error {e}")
         return False
 
 

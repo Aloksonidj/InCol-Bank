@@ -6,6 +6,7 @@ from django.contrib.auth import login
 from django.contrib.auth.hashers import check_password
 from django.contrib import messages
 from django.db import IntegrityError
+from login.views import statement as state
 
 
 def Home(request):
@@ -19,6 +20,7 @@ def Home(request):
 
 
 def newAccount(request):
+    print("newAccount")
     """
     To Create a new Account in the Bank
     This function will create a new user and account in the database
@@ -57,6 +59,7 @@ def newAccount(request):
                         "name": '',
                         "pin": None
                     }
+                    messages.error(request, "Username already taken.")
                     return render(request, "open_Acc.html", data)
 
                 # Create a new account in the database
@@ -68,30 +71,29 @@ def newAccount(request):
                 user.username = f'{1201100+record.id}'
                 user.save()
 
+                # Login the user and redirect them to the account detail page
+                login(request, user)
                 # Create a new statement for the account
                 Balance = 2000
                 transfer = 2000
-                Result = statement(user, Balance, transfer, "Deposit")
-                Result.save()
-
-                # Login the user and redirect them to the account detail page
-                login(request, user)
-                return HttpResponseRedirect(reverse('LoginApp:account'))
+                user = Account.objects.get(user_name=user)
+                Result = state(user, Balance, transfer, "Deposit")
+                if Result:
+                    messages.success(request,"Account Created Successfully!!! ")
+                    messages.info(request,f"{user.username} your account number is{user.user_name}")
+                    return HttpResponseRedirect(reverse('LoginApp:account'))
+                
             
             else:
                 # If the password and confirm password is not the same then return the same page with an error message
-                data = {
-                    "pass": "Password and confirm password is not the same",
-                    "Account": '',
-                    "Acc_no": '',
-                    "name": '',
-                    "pin": None
-                }
+                messages.error(request, "Passwords do not match.")
                 return render(request, "open_Acc.html", data)
 
-    except:
+    except Exception as e:
         # If there is any error then return the same page with an error message
-        data["Acc_no"] = "Something Wrong !!!"
+
+        messages.error(request, "Error in creating account.")
+        print("Error in creating account.",e)
         return render(request, "open_Acc.html", data)
 
 

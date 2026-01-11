@@ -26,17 +26,18 @@
                     <b>*Note: Your InCol Pin is a 6-digit number And used only to send money</b>
                 </div>
                 {% else %}
-                <form method="post" action="{% url 'LoginApp:pin' %}" class="p-4 pt-2 pb-2">
-                    {% csrf_token %}
-                    <h1 class="mb-3">InCol Pin</h1>
-                    <input type="text" class="form-control rounded-4 w-75 mx-auto mb-3" name="setpin"
-                        placeholder="Enter a 6-digit Pin" required autofocus minlength="4" maxlength="6">
-                    <input type="text" class="form-control rounded-4 w-75 mx-auto mb-3" name="confirmpin"
-                        placeholder="Re-enter 6-digit Pin" required minlength="6">
-                    <button type="submit" class="btn btn-lg btn-info">Set Pin</button>
-                    {{pass}}
-                </form>
-                <b>*Note: Remember your InCol Pin for future use</b>
+                <div class="p-5 pt-1">
+                    <form method="post" action="{% url 'LoginApp:pin' %}" class="text-center ">
+                        {% csrf_token %}
+                        <h1 class="mb-3">InCol Pin</h1>
+                        <input type="text" class="form-control rounded-4 w-75 mx-auto mb-3" name="setpin"
+                            placeholder="Enter a 6-digit Pin" required autofocus minlength="4" maxlength="6">
+                        <input type="text" class="form-control rounded-4 w-75 mx-auto mb-3" name="confirmpin"
+                            placeholder="Re-enter 6-digit Pin" required minlength="6">
+                        <button type="submit" class="btn btn-lg btn-info">Set Pin</button>
+                    </form>
+                    <b>*Note: Remember your InCol Pin for future use</b>
+                </div>
 
                 {% endif %}
 
